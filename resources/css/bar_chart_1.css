@@ -1,0 +1,39 @@
+.bar2 {
+    fill: brown; 
+}
+
+.bar{
+    fill: green;
+}
+
+/* .bar:hover {
+    fill: #64707d;
+}
+
+.bar2:hover {
+    fill: #64707d;
+} */
+
+
+.axis text {
+
+    font: 10px sans-serif;
+
+}
+
+.axis path, .axis line {
+
+    fill: none;
+
+    stroke: #000;
+
+    shape-rendering: crispEdges;
+
+}
+
+
+svg text.label {
+    fill:black;
+    font: 12px sans-serif;  
+    font-weight: 400;
+  }

@@ -1,0 +1,144 @@
+* {
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    height:100%;
+    padding:10px;
+    text-align:center;
+} 
+
+html {
+    height:100%;
+  }
+
+h1{
+    text-align: center;
+    font-family: 'Roboto';
+    background-attachment: gray; 
+}
+
+#USMapDiv {
+    /* padding:10px; */
+    border:1px solid;
+    /* display:inline-block; */
+    float: left;
+    margin-top: 0px;
+    margin-top: 25px;
+
+    width:70%;
+    height:90%;
+    padding:0px;
+    position: relative;
+    /*margin:0px;*/
+  }
+
+.navigation {
+    /* padding:10px; */
+    border:1px solid;
+    /* display:inline-block; */
+    float: right;
+    margin-top: 0px;
+    margin-top: 25px;
+    height:90%;
+    width:30%;
+    text-align: center;
+/*    display: flex;
+    justify-content:  center;
+    align-items: center;*/
+  }
+
+#statesvg{
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    overflow: scroll;
+    margin:0px;
+    padding: 0px;
+    position:absolute;
+    left:0; 
+    top:0;
+}
+
+.user{
+    width: 50%;
+    height: 20%;
+    float: left;
+}
+
+.system{
+    width: 50%;
+    height: 20%;
+    float: right;
+}
+
+.go{
+    width: 50%;
+    height: 5%;
+    /*float: left;*/
+    display:block;
+    margin: 10px auto;
+}
+
+.select_locality
+{
+    width: 50%;
+    height: 5%;
+    display: block;
+    margin: 10px auto;
+
+    /*float: left;*/
+}
+
+.select_hotel
+{
+    width: 50%;
+    /*height: 5%;*/
+    display: block;
+    margin: 10px auto;
+    overflow-y:auto;
+    overflow-x:auto;
+
+}
+
+.select_quality
+{
+    width: 50%;
+    height: 5%;
+    display: block;
+    margin: 10px auto;
+    overflow-y:auto;
+    overflow-x:auto;
+
+}
+
+.star_table
+{
+    width: 50%;
+    height: 5%;
+    display: block;
+    margin: 10px auto;
+}
+
+#BarChartDiv{
+    border:1px solid;
+    /* float: left; */
+    display:inline-block;
+    margin-top: 0px;
+    width:100%;
+    padding:0px;
+    position: relative;
+}
+
+#ThemeRiverDiv{
+    border:1px solid;
+    /* float: left; */
+    display:inline-block;
+    margin-top: 0px;
+    width:100%;
+    padding:0px;
+    position: relative;
+}
+
