@@ -1,155 +1,222 @@
-function show_time(d,locality,hotel_name)
-{
-   hotel_name = hotel_name.replace(/\//g, "-");
-   hotel_name = hotel_name.replace(/ /g, "_");
-  //
-  // console.log("the hotel for which this data is being displayed is " + hotel_name);
-  console.log("The path to the file ./resources/data/theme_river/"+locality+"/"+hotel_name);
+function show_time(d, locality, hotel_name,link) {
 
-  var myPath = "./resources/data/theme_river/"+locality+"/"+hotel_name+".csv";
+  document.getElementById("hotel_name").innerHTML = hotel_name;
+  document.getElementById("hotel_name").href = link; 
+  
+  document.getElementById("hotel_name").style.fontSize = "xx-large";
+
+  hotel_name = hotel_name.replace(/\//g, "-");
+  hotel_name = hotel_name.replace(/ /g, "_");
+
+  console.log("the hotel for which this data is being displayed is " + hotel_name);
+  console.log("The path to the file ./resources/data/theme_river/" + locality + "/" + hotel_name);
+
+  var myPath = "./resources/data/theme_river/" + locality + "/" + hotel_name + ".csv";
   var datearray = [];
   var colorrange = [];
-  d3version4.select(".tooltip").remove();
-    d3version4.select(".time_series").remove();
-  // d3version4.selectAll(".remove").remove();
+  d3version4.select(".time").remove()
+  d3version4.selectAll(".remove").remove();
 
-  // document.body.appendChild(document.getElementById('chartId'));
-  // document.body.appendChild(document.getElementById('timeId'));
-
-
- d3version4.csv(myPath, function(err, d){
-   if(err) console.log(err);
-
-   var nested_data = d3version4.nest()
- 		.key(function(d) { return d.date; })
-         .entries(d);
-
-   var mqpdata = nested_data.map(function(d){
-     var array = d.key.split("/");
-     var obj = {
-       date: new Date(parseInt(array[2]), parseInt(array[0])-1, 1)
-     }
-
-     d.values.forEach(function(v){
-       obj[v.key] = v.value;
-
-     })
-
-     return obj;
-   })
-   console.log("Darshan ka Print");
-   console.log(mqpdata)
-
-   buildStreamGraph(mqpdata);
-
- })
+  chart(myPath, "orange");
+  document.body.appendChild(document.getElementById('ThemeRiverDiv'));
 
 
- function buildStreamGraph(mqpdata) {
- var data = mqpdata;
+  function chart(csvpath, color) {
+    console.log("does it enter the chart function");
+
+    if (color == "blue") {
+      colorrange = ["#045A8D", "#2B8CBE", "#74A9CF", "#A6BDDB", "#D0D1E6", "#F1EEF6"];
+    }
+    else if (color == "pink") {
+      colorrange = ["#980043", "#DD1C77", "#DF65B0", "#C994C7", "#D4B9DA", "#F1EEF6"];
+    }
+    else if (color == "orange") {
+      colorrange = ["#008000", "#ad0906"]
+    }
+    strokecolor = colorrange[0];
+
+    // var format = d3version4.time.format("%m/%d/%y");
+
+    var margin = { top: 20, right: 40, bottom: 30, left: 30 };
+    var width = document.body.clientWidth - margin.left - margin.right;
+    var height = 400 - margin.top - margin.bottom;
+
+    var tooltip = d3version4.select("#ThemeRiverDiv")
+      .append("div")
+      .attr("class", "remove")
+      .style("position", "relative")
+      .style("z-index", "40")
+      .style("visibility", "hidden")
+      .style("left", "50px");
 
 
- var stack = d3version4.stack()
-     .keys(["POS", "NEG"])
-     .order(d3version4.stackOrderNone)
-     .offset(d3version4.stackOffsetWiggle);
+    var x = d3version4.scaleTime()
+      .range([0, width]);
 
- var series = stack(data);
+    var y = d3version4.scaleLinear()
+      .range([height - 10, 0]);
 
- var width = 850,
-     height = 500;
+    var z = d3version4.scaleOrdinal()
+      .range(colorrange);
 
- var x = d3version4.scaleTime()
-     .domain(d3version4.extent(data, function(d){ return d.date; }))
-     .range([100, width]);
- //
- var xAxis = d3version4.axisBottom(x);
+    // var yAxisr = d3version4.svg.axis()
+    //   .scale(y);
 
- var y = d3version4.scaleLinear()
-     .domain([0, d3version4.max(series, function(layer) { return d3version4.max(layer, function(d){ return d[0] + d[1];}); })])
-     .range([height/2, -200]);
-
-   var yAxis = d3.svg.axis()
-         .scale(y);
-   var yAxisR = d3.svg.axis()
-         .scale(y);
+    // var stack = d3version4.layout.stack()
+    //   .offset("silhouette")
+    //   .values(function (d) { return d.values; })
+    //   .x(function (d) { return d.date; })
+    //   .y(function (d) { return d.value; });
 
 
- var color = d3version4.scaleLinear()
-     .range(["#51D0D7", "#31B5BB"]);
+    var svg = d3version4.select("#ThemeRiverDiv").append("svg")
+      // .attr("height", height + margin.top + margin.bottom)
+      // .attr("width", width + margin.left + margin.right)
+      .attr("height", "100%")
+      .attr("width", "100%")
+      .attr("class", "time")
+      .attr("id", "timeId")
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
- var color = d3version4.scaleOrdinal(d3version4.schemeCategory20);
+    d3version4.csv(csvpath, function (d) {
 
- var area = d3version4.area()
-     .x(function(d) { /*console.info('in area function', d);*/ return x(d.data.date); })
-     .y0(function(d) { return y(d[0]); })
-     .y1(function(d) { return y(d[1]); })
-     .curve(d3version4.curveBasis);
+      var nested_data = d3version4.nest()
+        .key(function (d) { return d.month; })
+        .entries(d);
 
-  //  var tooltip = d3version4.select("#ThemeRiverDiv").append("div")
- 	// .attr("class", "tooltip");
+      var data = nested_data.map(function (d) {
+        var array = d.key.split("/");
+        var obj = {
+          month: new Date(parseInt(array[2]), parseInt(array[0]) - 1, 1)
+        }
+        d.values.forEach(function (v) {
+          obj[v.label] = v.count;
 
- var svg = d3version4.select("#ThemeRiverDiv").append("svg")
- .attr("class","time_series")
-     .attr("width", width)
-     .attr("height", height);
+        })
 
- svg.selectAll("path")
-     .data(series)
-     .enter().append("path")
-     .attr("d", area)
-     .style("fill", function() { return color(Math.random()); })
-     .on('mouseover', function(d){
-       d3version4.select(this).style('fill',d3version4.rgb( d3version4.select(this).style("fill") ).brighter());
-   		// d3version4.select("#ThemeRiverDiv").text(d.key);
-   // tooltip.transition()
-   //              .duration(700)
-   //              .style("opacity", 1);
-   // 			tooltip.html("Cantidad: " + "#familiares")
-   //              .style("left", (d3version4.event.pageX + 5) + "px")
-   //              .style("top", (d3version4.event.pageY - 28) + "px");
-     })
-     .on('mouseout', function(d){
-       d3version4.select(this).style('fill',
-          d3version4.rgb( d3version4.select(this).style("fill") ).darker());
-          // d3version4.select("#ThemeRiverDiv").text("Mouse over");
-   // tooltip.transition()
-   //              .duration(500)
-   //              .style("opacity", 0);
- })
+        return obj;
+      })
 
- // var x = d3.time.scale()
- //     .range([0, width]);
- //
- // var y = d3.scale.linear()
- //     .range([height-10, 0]);
- // var xAxis = d3.svg.axis()
- //     .scale(x)
- //     .orient("bottom")
- //     .ticks(d3.time.months);
- //
- // var yAxis = d3.svg.axis()
- //     .scale(y);
- //
- // var yAxisr = d3.svg.axis()
- //     .scale(y);
- //
- // svg.append("g")
- //     .attr("class", "x axis")
- //     .attr("transform", "translate(0," + height + ")")
- //     .call(xAxis);
- //
- // svg.append("g")
- //     .attr("class", "y axis")
- //     .attr("transform", "translate(" + width + ", 0)")
- //     .call(yAxis.orient("right"));
- //
- // svg.append("g")
- //     .attr("class", "y axis")
- //     .call(yAxis.orient("left"));
+      console.log(data)
 
 
-   var xAxisGroup = svg.append("g").call(xAxis);
- }
+      var stack = d3version4.stack()
+        .keys(["POS", "NEG"])
+        .order(d3version4.stackOrderNone)
+        .offset(d3version4.stackOffsetWiggle);
 
+      var series = stack(data);
+
+
+      x.domain(d3version4.extent(data, function (d) { return d.month; }))
+      y.domain([0, d3version4.max(series, function (layer) { return d3version4.max(layer, function (d) { return d[0] + d[1]; }); })])
+
+
+      var xAxis = d3version4.axisBottom(x);
+      var yAxis = d3version4.axisLeft(y);
+
+      var area = d3version4.area()
+        .x(function (d) { return x(d.data.month); })
+        .y0(function (d) { return y(d[0]); })
+        .y1(function (d) { return y(d[1]); })
+        .curve(d3version4.curveBasis);
+
+      svg.selectAll(".layer")
+        .data(series)
+        .enter().append("path")
+        .attr("d", area)
+        .attr("class", "layer")
+        .style("fill", function (d, i) { return z(i); });
+
+
+      svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + (height+200) + ")")
+        .call(xAxis);
+
+      svg.append("g")
+        .attr("class", "y axis")
+        .attr("transform", "translate(" + width + ", 200)")
+        .call(yAxis);
+
+      svg.append("g")
+        .attr("class", "y axis")
+        .attr("transform", "translate(0, 200)")
+        .call(yAxis);
+
+      svg.selectAll(".layer")
+        .attr("opacity", 1)
+        .on("mouseover", function (d, i) {
+          svg.selectAll(".layer").transition()
+            .duration(250)
+            .attr("opacity", function (d, j) {
+              return j != i ? 0.6 : 1;
+            })
+        })
+
+        .on("mousemove", function (d, i) {
+          mousex = d3version4.mouse(this);
+          mousex = mousex[0];
+          console.log("mousex : "+ mousex)
+          var invertedx = x.invert(mousex);
+          console.log("invertedx : " + invertedx)
+          console.log("invertedx.getMonth() : "+invertedx.getMonth())
+          console.log("invertedx.getDate() : "+invertedx.getDate())
+          console.log("invertedx.getYear() : "+invertedx.getYear())
+          invertedx = invertedx.getMonth() + invertedx.getDate();
+          console.log("invertedx.getMonth() + invertedx.getDate(): "+invertedx)
+          var selected = (d.key);
+          console.log("selected : "+ selected)
+          for (var k = 0; k < selected.length; k++) {
+            datearray[k] = selected[k].month
+            console.log("datearray[k] : "+ datearray[k])
+            datearray[k] = datearray[k].getMonth() + datearray[k].getDate();
+            console.log("datearray[k] 1: "+ datearray[k])
+          }
+
+          mousedate = datearray.indexOf(invertedx);
+          console.log("mousedate: "+mousedate)
+          proVal = d.count[mousedate].count;
+          console.log("proval : "+ proValP)
+
+          d3version4.select(this)
+            .classed("hover", true)
+            .attr("stroke", strokecolor)
+            .attr("stroke-width", "0.5px"),
+            tooltip.html("<p>" + d.key + "<br>" + proVal + "</p>").style("visibility", "visible").style("left", margin.left).style("top", margin.top).style("position", "absolute");
+
+        })
+        .on("mouseout", function (d, i) {
+          svg.selectAll(".layer")
+            .transition()
+            .duration(250)
+            .attr("opacity", "1");
+          d3version4.select(this)
+            .classed("hover", false)
+            .attr("stroke-width", "0px"), tooltip.html("<p>" + d.label + "<br>" + proVal + "</p>").style("visibility", "hidden").style("left", margin.left).style("top", margin.top).style("position", "absolute");
+        })
+
+      var vertical = d3version4.select("#ThemeRiverDiv")
+        .append("div")
+        .attr("class", "remove")
+        .style("position", "relative")
+        .style("z-index", "19")
+        .style("width", "1px")
+        .style("left", "0px")
+        .style("background", "#fff");
+
+      d3version4.select("#ThemeRiverDiv")
+        .on("mousemove", function () {
+          mousex = d3version4.mouse(this);
+          mousex = mousex[0] + 5;
+          vertical.style("left", mousex + "px")
+        })
+        .on("mouseover", function () {
+          mousex = d3version4.mouse(this);
+          mousex = mousex[0] + 5;
+          vertical.style("left", mousex + "px")
+        });
+    });
+  }
 }

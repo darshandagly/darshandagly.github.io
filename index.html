@@ -10,11 +10,9 @@
 	<link rel="stylesheet" type="text/css" href="./resources/css/button_1.css">
 	<link rel="stylesheet" type="text/css" href="./resources/css/bar_chart_1.css">
 	<link rel="stylesheet" type="text/css" href="./resources/css/SimpleStarRating.css">
-	<link rel="stylesheet" type="text/css" href="./resources/css/stream_graph_css.css">
-
 	<link href='https://fonts.googleapis.com/css?family=Roboto:100,400,300,500,700' rel='stylesheet' type='text/css'>
 	<script type='text/javascript' src="./resources/javascript/d3version4.js"></script>
-	<script type='text/javascript' src="https://d3js.org/d3.v3.min.js"></script>
+	<script type='text/javascript' src="http://d3js.org/d3.v3.min.js"></script>
 	<script type='text/javascript'
 		src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/1.7.0/d3-legend.min.js"></script>
 
@@ -26,9 +24,12 @@
 	<div id="tooltip"></div><!-- div to hold tooltip. -->
 	<div id="USMapDiv"><svg id="statesvg"></svg></div>
 	<div class="navigation" id="navigationId">
+		<p id="state_name"></p>
 	</div>
 	<div id="BarChartDiv"></div>
-	<div id="ThemeRiverDiv"></p>
+	<div id="ThemeRiverDiv" style="width:100%;height:100%;position:relative;padding:0px;margin:0px;display:block;">
+			<a id="hotel_name" ></a>
+		<div class="chart" id="chartId"></div>
 	</div>
 	<script type='text/javascript' src="./resources/javascript/uStates.js"></script> <!-- creates uStates. -->
 	<script type='text/javascript' src="./resources/javascript/SimpleStarRating.js"></script>

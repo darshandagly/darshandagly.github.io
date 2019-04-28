@@ -134,9 +134,9 @@ console.log("Did simple ratings get called?");
 
             ratings[i].addEventListener('rate', function(e) {
                 console.log('Rating: ' + e.detail);
-                    d3.select(".tooltip").remove();
-                    d3.select(".time_series").remove();
-                // d3.selectAll(".remove").remove();
+                    d3.select(".time").remove()
+                d3.selectAll(".remove").remove();
+                document.getElementById("hotel_name").innerHTML = "";
 
                 hotels = []
                 localityValue = d3.select(".select_locality").property('value');

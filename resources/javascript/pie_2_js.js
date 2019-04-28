@@ -2,6 +2,7 @@
 function display_pie(localityValue, factorValue) {
 	d3.select(".star_table").remove();
 	d3.select(".pie_chart").remove();
+	document.getElementById("hotel_name").innerHTML = "";
 	d3.json("./resources/data/aggregated_star_data.json", function (dataset) {
 		var classes = ['one', 'two', 'three', 'four', 'five'];
 
@@ -39,7 +40,7 @@ function display_pie(localityValue, factorValue) {
 			.value(function (d) { return d.value; });
 
 		function mouseover(d) {
-			d3.selectAll(".fan").style("cursor", "pointer");
+			// d3.selectAll(".fan").style("cursor", "pointer");
 			// console.log("mouse over gets triggered?");
 		}
 		function mouseout(d) {
@@ -48,16 +49,15 @@ function display_pie(localityValue, factorValue) {
 		}
 
 		function call_stacked_bar(d) {
-			d3.select(".tooltip").remove();
-			d3.select(".time_series").remove();
-			// d3.selectAll(".remove").remove();
+			d3.select(".time").remove()
+			d3.selectAll(".remove").remove();
 
 			hotels = []
 			localityValue = d3.select(".select_locality").property('value');
 			stacked_bar(d, localityValue, hotels, factorValue);
 		}
 
-		colors = ["#FFA600", "#58508D", "#BC5090", "#FF6361", "#003F5C"]
+		colors = ["#C14242", "#BF7F3F", "#BFBF3F", "#7FBF3F", "#3FBF7F"]
 
 		var g = svg.selectAll(".fan")
 			.data(pie(apnaHotel.count))
@@ -87,7 +87,7 @@ function display_pie(localityValue, factorValue) {
 
 		var colorScale = d3.scale.ordinal()
 			.domain(["1 Star", "2 Star", "3 Star", "4 Star", "5 Star"])
-			.range(["#FFA600", "#58508D", "#BC5090", "#FF6361", "#003F5C"]);
+			.range(["#C14242", "#BF7F3F", "#BFBF3F", "#7FBF3F", "#3FBF7F"]);
 
 		var colorLegend = d3.legend.color()
 			.scale(colorScale)

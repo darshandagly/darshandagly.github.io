@@ -94,9 +94,9 @@
 			d3.select(".go").style({ visibility: "hidden" });
 			d3.select(".stacked_bar").remove();
 			d3.select(".pie_chart").remove();
-			d3.select(".tooltip").remove();
-			d3.select(".time_series").remove();
-			// d3.selectAll(".remove").remove();
+			d3.select(".time").remove()
+			d3.selectAll(".remove").remove();
+			document.getElementById("hotel_name").innerHTML = "";
 			show_buttons(data.id);
 
 		}
@@ -118,11 +118,30 @@
 			d3.select(".select_quality").remove();
 			d3.select(".select_hotel").remove();
 
+			document.getElementById("state_name").innerHTML = data.n;
+			document.getElementById("state_name").style.fontSize = "xx-large";
+
 			console.log("inside onClickUtil");
 			console.log(data.id);
 			console.log(sampleData[data.id].avg);
 			if (sampleData[data.id].avg != 0.0) {
 				onClick(data);
+			}
+			else {
+				{
+					d3.select(".select_locality").remove();
+					d3.select(".select_quality").remove();
+					d3.select(".select_hotel").remove();
+					d3.select(".system").remove();
+					d3.select(".user").remove();
+					d3.select(".go").remove();
+					d3.select(".stacked_bar").remove();
+					d3.select(".star_table").remove();
+					d3.select(".pie_chart").remove();
+					d3.select(".time").remove()
+					d3.selectAll(".remove").remove();
+					document.getElementById("hotel_name").innerHTML = "";
+				}
 			}
 		}
 
@@ -137,12 +156,12 @@
 			d3.select(".stacked_bar").remove();
 			d3.select(".star_table").remove();
 			d3.select(".pie_chart").remove();
-			d3.select(".time_series").remove();
+			document.getElementById("hotel_name").innerHTML = "";
 			// d3.select(".chart").remove()
 			// 	document.body.innerHTML += '<div class="chart"></div>';
 
-			d3.select(".tooltip").remove()
-			// d3.selectAll(".remove").remove();
+			d3.select(".time").remove()
+			d3.selectAll(".remove").remove();
 
 			if (d == "I will choose the hotels") {
 				setupLocality(dataId);

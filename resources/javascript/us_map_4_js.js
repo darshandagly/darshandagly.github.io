@@ -24,21 +24,21 @@
 	{
 				var nest = d3.nest()
 				.key(function(d) { return d.address.region;})
-				.rollup(function(d) { 
+				.rollup(function(d) {
 				return d3.mean(d, function(g) {return g.hotel_class; });
 				}).entries(data);
 				console.log("Nest variable")
 				console.log(nest)
 				dataset = data;
-				sampleData ={};	/* Sample random data. */	
+				sampleData ={};	/* Sample random data. */
 				["HI", "AK", "FL", "SC", "GA", "AL", "NC", "TN", "RI", "CT", "MA",
-				"ME", "NH", "VT", "NY", "NJ", "PA", "DE", "MD", "WV", "KY", "OH", 
-				"MI", "WY", "MT", "ID", "WA", "DC", "TX", "CA", "AZ", "NV", "UT", 
-				"CO", "NM", "OR", "ND", "SD", "NE", "IA", "MS", "IN", "IL", "MN", 
+				"ME", "NH", "VT", "NY", "NJ", "PA", "DE", "MD", "WV", "KY", "OH",
+				"MI", "WY", "MT", "ID", "WA", "DC", "TX", "CA", "AZ", "NV", "UT",
+				"CO", "NM", "OR", "ND", "SD", "NE", "IA", "MS", "IN", "IL", "MN",
 				"WI", "MO", "AR", "OK", "KS", "LS", "VA"]
-					.forEach(function(d,i){ 
+					.forEach(function(d,i){
 						var c ;
-						
+
 								var data_filter = nest.filter(element => element.key == d);
 								if(data_filter[0] !=null)
 								{
@@ -48,18 +48,18 @@
 								{
 									c = 0.0
 								}
-								
-					
-						sampleData[d]={avg:c, color:d3.interpolate("#e8f4ee", "#006b37")(c/2.5)}; 
-						
-								
-	
-						
-				
-					}); 
-					/* draw states on id #statesvg */	
+
+
+						sampleData[d]={avg:c, color:d3.interpolate("#e8f4ee", "#006b37")(c/2.5)};
+
+
+
+
+
+					});
+					/* draw states on id #statesvg */
 						uStates.draw("#statesvg", sampleData, tooltipHtml,tooltipHtmlOtherStates);
-						
+
 						d3.select(self.frameElement).style("height", "70%");
 
 	});

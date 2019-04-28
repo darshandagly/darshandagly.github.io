@@ -1,15 +1,27 @@
 function stacked_bar(d, input_locality, hotels, factor, rating) {
     d3.select(".stacked_bar").remove();
+    document.getElementById("hotel_name").innerHTML = "";
     var margin = {
         top: 30,
         right: 10,
         bottom: 10,
         left: 10
     },
-        width = 500 - margin.left - margin.right,
+        width = 500 - margin.left - margin.right;
 
-        height = 500 - margin.top - margin.bottom;
+        // height = 500 - margin.top - margin.bottom;
+        if(hotels.length == 0 )
+        {
+           height = 500 - margin.top - margin.bottom;
+        }
+        else {
+          height = Math.min(500,50*hotels.length);
+        }
 
+        if(hotels.length>10)
+        {
+          hotels = hotels.slice(0,10);
+        }
     var x = d3.scale.linear()
         .range([0, width])
 
@@ -27,10 +39,23 @@ function stacked_bar(d, input_locality, hotels, factor, rating) {
             console.log(rating);
 
             if (rating == undefined || rating == null)
+            {
+              console.log("does it come here?")
                 return obj.locality == input_locality;
+
+              }
             else
+            {
+              console.log("or here?")
                 return obj.locality == input_locality && obj.class == rating;
+              }
         });
+        console.log("this is the data");
+        console.log(data);
+        if(data.length < 10 )
+        {
+          height = Math.min(500,50*data.length);
+        }
         if (data == undefined || data.length == 0) {
 
             window.alert("No " + rating + " star hotels in this locality");
@@ -43,6 +68,7 @@ function stacked_bar(d, input_locality, hotels, factor, rating) {
 
 
         if (hotels == undefined || hotels.length == 0) {
+
             data = data;
         }
         else {
@@ -56,7 +82,10 @@ function stacked_bar(d, input_locality, hotels, factor, rating) {
             data = filteredArray;
 
         }
-
+        console.log("data before sort");
+        console.log(data);
+        console.log("height");
+        console.log(height);
         data.sort(function (a, b) {
             // console.log("We are sorting by the factor");
             // console.log(factor);
@@ -65,8 +94,11 @@ function stacked_bar(d, input_locality, hotels, factor, rating) {
 
         data = data.slice(0, 10)
 
-        data["positive"] = +data["positive"];
-        data["negative"] = +data["negative"];
+        console.log("data before plus");
+        console.log(data);
+
+        // data["positive"] = +data["positive"];
+        // data["negative"] = +data["negative"];
 
         console.log(data)
         var svg = d3.select("#BarChartDiv").append("svg")
@@ -99,7 +131,7 @@ function stacked_bar(d, input_locality, hotels, factor, rating) {
             .on("click", function (d, i) {
                 console.log("I just clicked the bar");
                 console.log(d);
-                show_time(d, d.locality, d.name)
+                show_time(d, d.locality, d.name,d.link)
             })
 
         svg.selectAll(".text")
@@ -133,7 +165,12 @@ function stacked_bar(d, input_locality, hotels, factor, rating) {
             .attr("width", function (d) {
                 return Math.abs(x(-d.negative) - x(0));
             })
-            .attr("height", y.rangeBand());
+            .attr("height", y.rangeBand())
+            .on("click", function (d, i) {
+          console.log("I just clicked the bar");
+          console.log(d);
+          show_time(d, d.locality, d.name,d.link)
+      })
 
 
         svg.append("g")

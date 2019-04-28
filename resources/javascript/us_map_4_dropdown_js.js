@@ -105,9 +105,9 @@ function onchange() {
 						d3.select(".stacked_bar").remove();
 						d3.select(".star_table").remove();
 						d3.select(".pie_chart").remove();
-						d3.select(".tooltip").remove()
-						d3.select(".time_series").remove()
-						// d3.selectAll(".remove").remove();
+						d3.select(".time").remove()
+						d3.selectAll(".remove").remove();
+						document.getElementById("hotel_name").innerHTML = data.n;
 						console.log("The value of factor is ");
 						console.log(factorValue);
 						console.log("The value of hotels is");
@@ -130,6 +130,7 @@ function onchange() {
 								selection = "invalid";
 								d3.select(".star_table").remove();
 								d3.select(".pie_chart").remove();
+								document.getElementById("hotel_name").innerHTML = "";
 								break;
 							}
 							selection="valid";
@@ -140,8 +141,9 @@ function onchange() {
 												d3.select(".stacked_bar").remove();
 												d3.select(".star_table").remove();
 												d3.select(".pie_chart").remove();
-												d3.select(".tooltip").remove()
-												// d3.selectAll(".remove").remove();
+												d3.select(".time").remove()
+												d3.selectAll(".remove").remove();
+												document.getElementById("hotel_name").innerHTML = "";
 												console.log("The value of factor is ");
 												console.log(factorValue);
 												// stacked_bar(d,factorValue);
@@ -158,6 +160,7 @@ function onchange() {
 								{
 									d3.select(".star_table").remove();
 									d3.select(".pie_chart").remove();
+									document.getElementById("hotel_name").innerHTML ="";
 								}
 									// console.log("Let's try to append a button");
 									// d3.select(".go").remove();
@@ -199,6 +202,7 @@ function onchange() {
 if(buttonId == "user")
 	{
 		d3.select(".pie_chart").remove();
+		document.getElementById("hotel_name").innerHTML = "";
 	}
 
 
